@@ -4,17 +4,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import string
 
-# Load anime data
 Anime = pd.read_csv("Anime_Clean.csv")
 
-# Initialize CountVectorizer
 cv = CountVectorizer(max_features=13500, stop_words="english")
 vectors = cv.fit_transform(Anime["Tags"]).toarray()
 
-# Calculate cosine similarity
 Similarity = cosine_similarity(vectors)
 
-# Preprocess anime names for case-insensitive matching
 Anime["Name_new"] = Anime["Name"].apply(lambda x: x.lower())
 Anime["Name_new"] = Anime["Name_new"].apply(lambda x: x.translate(str.maketrans("", "", string.punctuation)))
 Anime["Name_new"] = Anime["Name_new"].apply(lambda x: " ".join(x.split()))
